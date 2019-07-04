@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.tabSize": 2,
+		"files.autoSave": "onFocusChange",
+		"ruby.useBundler": true,
+		"ruby.useLanguageServer": true,
+		"ruby.rubocop.useBundler": true,
+		"ruby.codeCompletion": "rcodetools"
+	},
+	"extensions": {
+		"recommendations": [
+			"rebornix.ruby",
+			"misogi.ruby-rubocop",
+			"vscodevim.vim"
+		]
+	}
+}
