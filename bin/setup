@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+set -vx
+
+sudo hab pkg install core/ruby26 core/gcc core/gcc-libs core/make core/sqlite --binlink --force
+bundle config --local path vendor/bundle
+bundle config --local build.sqlite3 --with-sqlite3-dir="$(hab pkg path core/sqlite)"
+
+bundle install
+
+# Do any other automated setup that you need to do here
