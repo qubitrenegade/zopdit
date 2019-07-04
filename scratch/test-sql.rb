@@ -23,16 +23,23 @@ module Zopdit
 end
 
 rss = Zopdit::RSS::Feed.new
-rss.feed
+# rss.feed
 
 posts = Zopdit::DB::Posts.new
-pp posts.latest_post
+# pp posts.latest_post
 
 if posts == rss.items.first
   puts 'All posts are up to date.  Not inserting anything new'
 else
   rss.items.reverse_each do |i|
     posts.insert_post(
+      i,
+      posted: 0
+    )
+  end
+end
+
+__END__
       title: i.title,
       published: i.published,
       direct_link: i.direct_link,

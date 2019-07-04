@@ -9,6 +9,7 @@ gemspec
 
 gem 'faraday'
 gem 'json'
+gem 'logger'
 gem 'rss'
 gem 'sequel'
 gem 'sqlite3'

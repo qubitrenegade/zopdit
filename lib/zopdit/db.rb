@@ -6,7 +6,11 @@ module Zopdit
   module DB
     # Need to take DB name, and be able to connect to psql too
     def db
-      @db ||= File.join(Zopdit.root_dir, 'db', 'test.db').then { |s| Sequel.connect "sqlite://#{s}" }
+      @db ||= db_path
+    end
+
+    def db_path
+      File.join(Zopdit.root_dir, 'db', 'test.db').then { |s| Sequel.connect "sqlite://#{s}" }
     end
 
     def ds

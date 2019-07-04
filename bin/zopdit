@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+Bundler.require :default
+require 'zopdit'
+
+client_id, secret, username, password = %w[
+  ZOP_CLIENT_ID
+  ZOP_SECRET
+  ZOP_USERNAME
+  ZOP_PASSWORD
+].map { |s| ENV[s] }
+
+zop = Zopdit::Bot.new(
+  reddit_username: username,
+  reddit_password: password,
+  reddit_client_id: client_id,
+  reddit_secret: secret,
+  subreddit: 'u_zop_bot'
+)
+
+zop.update_post_db

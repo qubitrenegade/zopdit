@@ -6,13 +6,16 @@ module Zopdit
     class Client
       include Zopdit::HTTP
 
-      attr_accessor :username, :password, :client_id, :secret, :token_expires, :grant_type, :scope, :token_type
+      attr_accessor :username, :password, :client_id, :secret,
+                    :grant_type, :scope, :start_request, :subreddit,
+                    :token_type, :token_expires
 
       def initialize(username:, password:, client_id:, secret:, **options)
         self.username = username
         self.password = password
         self.client_id = client_id
         self.secret = secret
+        self.subreddit = options[:subreddit]
         self.grant_type = options[:grant_type] || 'password'
         self.scope = options[:scope] || '*'
         self.token_type = options[:token_type] || 'bearer'
@@ -44,8 +47,9 @@ module Zopdit
       def obtain_access_token
         con = connection REDDIT_BASE_URL
         con.basic_auth client_id, secret
-        response = request(:post, '/api/v1/access_token', access_token_options, con)
-        self.token_expires = request_time + response.expires_in
+        start_request = request_time
+        response = request(:post, '/api/v1/access_token', options: access_token_options, klient: con)
+        self.token_expires =  start_request + response.expires_in
         response.access_token
       end
 
@@ -69,7 +73,7 @@ module Zopdit
 
       # if we move url and text up here we get errors.
       # maybe a more general "options building" function?
-      def post_options(kind: 'link', subreddit:, title:)
+      def post_options(subreddit:, title:, kind: 'link')
         {
           ad: false,
           api_type: 'json',
@@ -81,14 +85,13 @@ module Zopdit
         }
       end
 
-      def post(kind: 'link', subreddit:, title:, url: nil, text: nil)
+      def post(title:, kind: 'link', subreddit: self.subreddit, url: nil, text: nil)
         warn 'URL and Text not both supported, posting URL' if url && text
-        options = post_options kind: kind, subreddit: subreddit, title: title, url: nil, text: nil
+        options = post_options kind: kind, subreddit: subreddit, title: title
         options[:url] = url if url
         options[:text] = text if !url && text
 
-        resp = request 'post', '/api/submit', options: options
-        resp.json.data
+        request('post', '/api/submit', options: options).json
       end
 
       def comment(text, thing_id)

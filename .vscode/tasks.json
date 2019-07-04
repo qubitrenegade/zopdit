@@ -11,6 +11,23 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "rubocop",
+      "type": "shell",
+      "command": "bundle exec rubocop",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "rubocop autocorrect",
+      "type": "shell",
+      "command": "bundle exec rubocop -a",
+      "group": {
+        "kind": "build"
+      }
     }
   ]
 } 

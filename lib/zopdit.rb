@@ -5,6 +5,7 @@ Bundler.require :default
 
 require 'zopdit/version'
 
+require 'zopdit/bot'
 require 'zopdit/db'
 require 'zopdit/db/posts'
 require 'zopdit/http'

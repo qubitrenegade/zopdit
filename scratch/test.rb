@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/LineLength
-
 require 'bundler/setup'
 Bundler.require :default
 require 'zopdit'
@@ -17,23 +15,10 @@ client_id, secret, username, password = %w[
 puts "Clientid: #{client_id}"
 
 module Zopdit
-  # This is a test.  This is only a test
-  class Bot
-    attr_accessor :rss_client, :reddit_client
-
-    def initialize(reddit_username:, reddit_password:, reddit_client_id:, reddit_secret:, subreddit:)
-      self.reddit_client = Zopdit::Reddit::Client.new(
-        username: reddit_username,
-        password: reddit_password,
-        client_id: reddit_client_id,
-        secret: reddit_secret
-      )
-    end
-  end
 end
 
 # me = zrc.client.get '/api/v1/me/karma'
-zrc = Zopdit::Bot.new(
+zop = Zopdit::Bot.new(
   reddit_username: username,
   reddit_password: password,
   reddit_client_id: client_id,
@@ -41,8 +26,16 @@ zrc = Zopdit::Bot.new(
   subreddit: 'u_zop_bot'
 )
 
-me = zrc.reddit_client.karma
+me = zop.reddit.karma
 puts me
+
+zop.update_post_db
+zop.posts.un_update_posted 12
+
+__END__
+puts "Post id 12: #{zop.posts.ds.where(id: 12)[:id]}"
+a = zop.posts.ds.where(id: 12)[0]
+puts "a.class: #{a.class}"
 
 # puts zrc.post
 # post = zrc.post subreddit: 'u_zop_bot', title: 'Test Post Please Ignore', url: 'https://qubitrenegade.com'
