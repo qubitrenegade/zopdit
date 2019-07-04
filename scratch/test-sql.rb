@@ -52,7 +52,7 @@ sth = DB[:posts].prepare(:insert, :insert_posts,
   short_description: :$short_description
 )
 
-if latest_post && rss.items.first.title == latest_post.title
+if rss.items.first.title == latest_post.title
   puts 'Seems all posts are up to date...'
 else
   rss.items.reverse_each do |i|
@@ -61,7 +61,8 @@ else
       published: i.pub_date, 
       direct_link: i.direct_link, 
       post_link: i.post_link,
-      short_description: i.short_description
+      short_description: i.short_description,
+      posted: 0,
     )
   end
 end

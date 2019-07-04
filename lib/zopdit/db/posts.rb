@@ -37,7 +37,7 @@ module Zopdit
       # Not really sure if I like using `==` here like this
       alias inlucdes_latest_post? ==
       def ==(other)
-        latest_post.title == other.title &&
+        latest_post&.title == other.title &&
           latest_post.published == other.published
       end
     end

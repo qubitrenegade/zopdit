@@ -11,7 +11,7 @@ data/*
 !data/.gitkeep 
 db/*.db
 db/*
-!db/migrations/*
+!db/migrations/
 
 # rspec failure tracking
 .rspec_status
