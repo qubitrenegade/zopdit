@@ -35,13 +35,17 @@ module Zopdit
       rss.items.count { |i| !posts.post_by_title i.title }
     end
 
+    def botinfo
+      "^^I'm ^^a ^^bot ^^This ^^Action ^^Performed ^^Automatically;\n\n^^[Source](https://github.com/qubitrenegade/zopdit);^^[Feedback](https://github.com/qubitrenegade/zopdit/issues); ^^Direct ^^Complaints ^^to ^^/u/qubitrenegade"
+    end
+
     def post_links
       posts.links_to_post.tap { |links| puts 'No links to post' unless links.count.positive? }.each do |link|
-        post = reddit.post subreddit: 'u_zop_bot', title: link.title, url: link.post_link
+        post = reddit.post title: link.title, url: link.post_link
         if post.errors.any?
           puts "post.errors.shift #{post.errors.shift}"
         else
-          comment = reddit.comment "####{link.short_description}\n\n_Direct:_ #{link.direct_link}", post.data.name
+          comment = reddit.comment "####{link.short_description}\n\n_Direct:_ #{link.direct_link}\n\n#{botinfo}", post.data.name
           pp comment
           posts.update_posted link
         end
